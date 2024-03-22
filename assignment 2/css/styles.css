@@ -5,36 +5,36 @@ body {
     padding: 0;
 }
 
-
 .container {
     width: 80%;
     margin: 0 auto;
     padding: 20px 0;
     overflow: hidden;
-
 }
+
 .logo {
     width: 120px;
-    height: 120px;
+    height: 100px;
     border-radius: 50%;
     overflow: hidden;
     margin-right: auto;
     float: left;
 }
+
 .logo img {
     width: 120px; 
-    height: 120px;
+    height: 100%;
     border-radius: 50%;
-    float: left;
-}
-.container h1 {
-    margin: 0; /* Remove default margin */
-    margin-top: -5px; /* Adjust the margin to move the text upwards */
-}
-.nav{
-    overflow: hidden;
 }
 
+.container h1 {
+    margin: 0;
+    margin-top: -5px;
+}
+
+.nav {
+    overflow: hidden;
+}
 
 /* Header Styles */
 header {
@@ -42,8 +42,6 @@ header {
     color: #fff;
     padding: 10px 0;
     text-align: center;
-    
-
 }
 
 header nav ul {
@@ -67,14 +65,14 @@ header nav ul li a i {
 
 /* Hero Section Styles */
 #hero {
-    background-image: url('774-7744281_samsung-electronics-samsung-electronic-product-png.png');
+    background-image: url('../public/774-7744281_samsung-electronics-samsung-electronic-product-png.png');
     background-size: cover;
     background-position: right;
     color: white;
-    text-shadow:3px 3px 5px  black;
+    text-shadow: 3px 3px 5px black;
     text-align: center;
     padding: 100px 0;
-    border: 100px,blue;
+    border: 100px, blue;
 }
 
 #hero h2 {
@@ -100,7 +98,7 @@ header nav ul li a i {
 
 .btn::before {
     content: '';
-    background-image: url('774-7744281_samsung-electronics-samsung-electronic-product-png.png');
+    background-image: url('../public/774-7744281_samsung-electronics-samsung-electronic-product-png.png');
     background-size: cover;
     position: absolute;
     top: 0;
@@ -125,12 +123,12 @@ header nav ul li a i {
     text-align: center;
 }
 
-
 .product-card {
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
+    margin: 1%;
 }
 
 .product-card img {
@@ -138,6 +136,7 @@ header nav ul li a i {
     height: auto;
     border-radius: 5px;
     margin-bottom: 20px;
+    object-fit: contain;
 }
 
 .product-card h3 {
@@ -149,4 +148,80 @@ header nav ul li a i {
     font-size: 18px;
     margin-bottom: 20px;
     color: #6c757d;
+}
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.d-flex {
+    display: flex;
+    width: 100%;
+}
+
+.w-50 {
+    width: 50%;
+    display: flex;
+    flex-direction: column; 
+}
+
+ul {
+    list-style: none;
+}
+
+/* Contact Form Section Styles */
+#contact {
+    padding: 40px 0;
+    background-color: #e9ecef;
+}
+
+#contact h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#contactForm {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+#error-message {
+    color: red;
+    margin-top: 10px;
 }
