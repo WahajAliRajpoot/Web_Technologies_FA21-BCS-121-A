@@ -1,7 +1,7 @@
 const express = require('express')
 
 const  server = express()
-const PORT = 3000
+const PORT = 3500
 
 
 server.set("view engine", "ejs")
@@ -15,4 +15,5 @@ server.get("/", async (req,res)=>{
 server.listen(PORT, ()=>{
     console.log(`Server running on ${PORT} \nhttp://localhost:${PORT}` )
 })
+
 
