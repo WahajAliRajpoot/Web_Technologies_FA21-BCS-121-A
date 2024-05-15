@@ -225,3 +225,29 @@ button[type="submit"]:hover {
     color: red;
     margin-top: 10px;
 }
+
+ul.menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-left: 225px;
+    width: 80%;
+}
+
+ul.menu li {
+    padding: 10px;
+}
+
+.login-signup {
+    display: inline-flex;
+    justify-content: end;
+    margin-left: 25px;
+}
+.login-signup .button {
+    height: 40px;
+    width: 70px;
+    margin-right: 15px;
+
+    border-radius: 15%;
+}
