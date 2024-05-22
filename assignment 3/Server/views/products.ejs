@@ -1,0 +1,17 @@
+<!-- products.ejs -->
+<h1>Products</h1>
+<ul>
+  <% products.forEach(product => { %>
+  <li><%= product.name %> - <%= product.price %></li>
+  <% }); %>
+</ul>
+<!-- products.ejs -->
+<!-- Pagination Links -->
+<% if (page > 1) { %>
+    <a href="/products?page=<%= page - 1 %>">Previous</a>
+    <% } %>
+    
+    <% if (products.length === limit) { %>
+    <a href="/products?page=<%= page + 1 %>">Next</a>
+    <% } %>
+    
