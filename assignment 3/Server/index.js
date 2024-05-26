@@ -1,25 +1,11 @@
 const express = require('express');
-const { MongoClient } = require('mongodb');
+const mongoose = require ('mongoose')
 const ejsLayout = require("express-ejs-layouts");
-
 const server = express();
 const PORT = 3500;
 
 // MongoDB Connection URI
-const uri = 'mongodb://localhost:27017';
-let Products;
-
-// Connect to the MongoDB server
-const client = new MongoClient(uri);
-client.connect()
-  .then(() => {
-    console.log('Connected to MongoDB');
-    const db = client.db('your_database_name');
-    Products = db.collection('Products');
-  })
-  .catch(err => {
-    console.error('Error connecting to MongoDB:', err);
-  });
+//mongoose provides a connection between mongodb ,nodejs and express
 
 server.use(ejsLayout);
 server.set("view engine", "ejs");
@@ -53,22 +39,6 @@ server.get("/signup",async (req,res)=>{
 server.post("/login",async (req,res)=>{
     res.render("login");
 });
-
-// Add MongoDB-related route for listing products
-server.get("/products", async (req, res) => {
-  const page = parseInt(req.query.page) || 1;
-  const limit = 10; // Number of products per page
-  const skip = (page - 1) * limit;
-
-  try {
-    const products = await Products.find().skip(skip).limit(limit).toArray();
-    res.render("products", { products });
-  } catch (err) {
-    console.error('Error fetching Products:', err);
-    res.status(500).send('Internal Server Error');
-  }
-});
-
 // Start the server
 server.listen(PORT, ()=>{
     console.log(`Server running on ${PORT} \nhttp://localhost:${PORT}` );

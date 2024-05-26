@@ -8,7 +8,8 @@
             <div class="products">
                 <% for (let i = 0; i<products.length ; i++) { %>
                     <div class="product-card">
-                        <img src="/images/gree.png" alt="Product 1">
+                    
+                        <img src="<%= products[i].image %>"> 
                         <h3><%= products[i].name %></h3>
                         <p><%= products[i].price %></p>
                         <a href="#" class="btn">Add to Cart</a>
