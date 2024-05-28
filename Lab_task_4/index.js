@@ -3,6 +3,8 @@ const ejsLayout = require("express-ejs-layouts");
 const mongoose = require("mongoose");
 const server = express();
 const Product = require("./models/product");
+const bodyParser = require("body-parser")
+const session = require("express-session");
 
 // MongoDB Connection URI
 //mongoose provides a connection between mongodb ,nodejs and express
@@ -11,10 +13,21 @@ server.use(ejsLayout);
 server.set("view engine", "ejs");
 server.use(express.static("public"));
 server.use(express.json());
+server.use(bodyParser.json())
+server.use(bodyParser.urlencoded({extended: true}))
+server.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true }
+  }))
+
+
+server.use("/api/user", require("./routes/api/user"))
 
 server.get("/products", async (req, res) => {
     let products = await Product.find();
-    console.log(products);
+    // console.log(products);
     res.render("products", {products});
 });
 
@@ -24,69 +37,82 @@ server.get("/api/products", async function (req, res) {
 });
 
 server.get("/", async (req,res)=>{
-    res.render("index");
+    res.render("index", { req: req});
 });
 
 server.get("/contact", async (req,res)=>{
-    res.render("contact");
+    res.render("contact", { req: req});
 });
 
 server.get("/shop", async (req,res)=>{
-    res.render("shop");
+    res.render("shop", { req: req});
 });
 
 
 
 server.get("/about",async (req,res)=>{
-    res.render("about");
+    res.render("about", { req: req});
 });
 
 server.get("/login",async (req,res)=>{
-    res.render("login");
+    res.render("login", { req: req});
 });
 
-server.get("/signup",async (req,res)=>{
-    res.render("signup");
+server.get("/register",async (req,res)=>{
+    res.render("signup", { req: req});
 });
 
-server.post("/login",async (req,res)=>{
-    res.render("login");
-});
 
-// server.get("/page?", async (req, res) => {
-//     const PAGE_SIZE = 5; // Number of products per page
-//     const page = parseInt(req.query.page) || 1; // Get current page from query parameters or default to page 1
-
-//     if(req.query.fields){
-//         console.log(req.query.fields)
-//     }
-//     try {
-//         const totalProducts = await Product.countDocuments();
-//         //console.log(totalProducts)
-//         const totalPages = Math.ceil(totalProducts / PAGE_SIZE);
-//         //console.log(totalPages)
-//         const products = await Product.find()
-//             .skip((page - 1) * PAGE_SIZE)
-//             .limit(PAGE_SIZE);
-
-//         res.render("index", { products, totalPages, currentPage: page });
-//     } catch (err) {
-//         console.error("Error fetching products:", err);
-//         res.status(500).send("Internal Server Error");
-//     }
-// });
 
 server.get("/:page", async (req, res) => {
     let page = req.params.page ? req.params.page : 1;
-    console.log("page",page)
+    // console.log("page",page)
     let pageSize = 5;
     let skip = (page - 1) * pageSize;
     let totalProducts = await Product.countDocuments();
     let totalPages = Math.ceil(totalProducts / pageSize);
-    console.log(totalPages)
+    // console.log(totalPages)
     let products = await Product.find().limit(pageSize).skip(skip);
     
     res.render("index2", {products,totalPages, currentPage: page });
+});
+
+
+// Add product to cart
+server.post('/add-to-cart', (req, res) => {
+    const productId = req.body.productId;
+
+    if (!req.session.cart) {
+        req.session.cart = [];
+    }
+
+    const productIndex = req.session.cart.findIndex(item => item.productId === productId);
+
+    if (productIndex > -1) {
+        req.session.cart[productIndex].quantity += 1;
+    } else {
+        req.session.cart.push({ productId: productId, quantity: 1 });
+    }
+
+    res.redirect('/cart');
+});
+
+// View cart
+server.get('/cart', async (req, res) => {
+    const cart = req.session.cart || [];
+    const productIds = cart.map(item => item.productId);
+
+    const products = await Product.find({ '_id': { $in: productIds } });
+
+    const cartWithDetails = products.map(product => {
+        const productInCart = cart.find(item => item.productId === product._id.toString());
+        return {
+            ...product._doc,
+            quantity: productInCart.quantity
+        };
+    });
+
+    res.render('cart', { cart: cartWithDetails, req: req });
 });
 // Start the server
 server.listen(5000, ()=>{

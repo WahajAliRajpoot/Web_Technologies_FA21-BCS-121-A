@@ -1,0 +1,62 @@
+
+#ajax{
+    margin-top: 10%;
+}
+
+#icon {
+    transform: scaleX(-1);
+filter: contrast(2%); 
+position: relative;
+top: -15px;
+
+ }
+.logo{
+   font-family: "DM Serif Display", serif;
+   font-size: 40px;
+position: relative;
+
+top: 5px;
+}
+
+.navbar-nav > li{
+    padding-left:20px;
+    padding-right:30px;
+    font-size: 17px;
+  }
+  .navbar-nav > li :hover {
+    transform: scale(1.5);
+}
+
+.navbar-nav > li ::after {
+    content:' ';
+    height: 2px;
+    width: 100%;
+    background-color: aqua;
+    position:absolute;
+    left: 0;
+    bottom: -8px;
+    opacity: 0;
+    transition: all 0.2s;
+    pointer-events: none;
+}
+
+.navbar-nav > li :hover::after {
+    opacity: 1;
+}
+
+
+
+.navbar .container-fluid .btn{
+    margin-right: 10px;
+    border-radius: 20px;
+}
+
+.Title{
+    color: rgb(241, 199, 9);
+}
+.Body{
+    color: blueviolet;
+}
+#createBtn{
+
+}
