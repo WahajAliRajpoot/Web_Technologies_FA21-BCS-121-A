@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visited Products</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <%- include("./partials/header.ejs", { req : req }) %>
+
+    <div class="container">
+        <h1>Visited Products</h1>
+        <div class="products">
+            <% visitedProducts.forEach(product => { %>
+                <div class="product-card">
+                    <img src="<%= product.image %>" alt="<%= product.name %>">
+                    <h3><%= product.name %></h3>
+                    <p>Price: $<%= product.price %></p>
+                    <a href="/products/<%= product._id %>">View Product</a>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+
+    <%- include("./partials/footer.ejs") %>
+</body>
+</html>

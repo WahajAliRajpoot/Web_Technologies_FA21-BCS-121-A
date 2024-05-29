@@ -78,7 +78,47 @@
                     </p>
                 </div>
             </div>
-        
+            <section id="featured-products">
+                <div class="container">
+                    <h2>Featured Products2</h2>
+                    <div class="products">
+                  
+                    <% for( let i = 0; i < featuredProducts.length; i++ ) { %>
+                        <% if(featuredProducts[i].isFeatured) { %>
+
+                            <div class="product-card">
+                                <h3><%= featuredProducts[i].name %></h3>
+                                <p><%= featuredProducts[i].description %></p>
+                                <p><%= featuredProducts[i].price %></p>
+                                <a class="btn" href="/products/<%= featuredProducts[i]._id %>" >View Description</a>
+                                <p class="description" id="description-<%= featuredProducts[i]._id %>" style="display: none;"><%= featuredProducts[i].description %></p>
+                            </div>
+                        <% } %>
+                    <% } %>
+                        </div>
+                    </div>
+                        </section>
     </section>
+    <script>
+        function showDescription(productId) {
+            var description = document.getElementById('description-' + productId);
+            if (description.style.display === 'none') {
+                description.style.display = 'block';
+            } else {
+                description.style.display = 'none';
+            }
+            $.ajax({
+                url: '/add-to-cart/' + productId,
+                method: 'POST',
+                success: function(response) {
+                    console.log('Product added to cart');
+                },
+                error: function(error) {
+                    console.log('Error adding product to cart:', error);
+                }
+            });
+        }
+        
+    </script>
 
    
