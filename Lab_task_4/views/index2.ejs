@@ -48,7 +48,12 @@
                             <div>
                                 <h3><%= product?.name%></h3>
                             <p><%= product?.price%></p>
-                            <a href="#" class="btn">Add to Cart</a>
+                            <form action="/add-to-cart/<%= product._id %>" method="post">
+                               
+
+                                <button  class="btn" type="submit">Add to CArt</button>
+                            </form>
+                            
                             </div>
                         </div>
                     <% }); %>

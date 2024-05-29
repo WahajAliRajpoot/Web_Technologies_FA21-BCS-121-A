@@ -28,7 +28,7 @@ server.use("/api/user", require("./routes/api/user"))
 server.get("/products", async (req, res) => {
     let products = await Product.find();
     // console.log(products);
-    res.render("products", {products});
+    res.render("products", {products,req:req});
 });
 
 server.get("/api/products", async function (req, res) {
@@ -39,6 +39,37 @@ server.get("/api/products", async function (req, res) {
 server.get("/", async (req,res)=>{
     res.render("index", { req: req});
 });
+
+
+
+// View cart
+server.get('/cart', async (req, res) => {
+    
+    console.log("HI")
+        let cart = req.session.cart ;
+        if(!cart){
+            req.session.cart = []
+            cart= []
+        }
+        //const productIds = cart.map(item => item.productId);
+    
+       // const products = await Product.find({ '_id': { $in: productIds } });
+    
+        // const cartWithDetails = products.map(product => {
+        //     const productInCart = cart.find(item => item.productId === product._id.toString());
+        //     return {
+        //         ...product._doc,
+        //         quantity: productInCart.quantity
+        //     };
+        // });
+        res.render('cart', { cart: cart, req: req });
+    
+    
+    });
+    
+    
+  
+
 
 server.get("/contact", async (req,res)=>{
     res.render("contact", { req: req});
@@ -74,46 +105,39 @@ server.get("/:page", async (req, res) => {
     // console.log(totalPages)
     let products = await Product.find().limit(pageSize).skip(skip);
     
-    res.render("index2", {products,totalPages, currentPage: page });
+    res.render("index2", {products,totalPages, currentPage: page, req:req });
 });
 
 
-// Add product to cart
-server.post('/add-to-cart', (req, res) => {
-    const productId = req.body.productId;
+
+
+  // Add product to cart
+  server.post('/add-to-cart/:id', (req, res) => {
+    const productId = req.params.id;
 
     if (!req.session.cart) {
         req.session.cart = [];
     }
+    req.session.cart.push(productId)
+   // console.log(req.session.cart)
 
-    const productIndex = req.session.cart.findIndex(item => item.productId === productId);
+    // const productIndex = req.session.cart.findIndex(item => {
+    //     console.log(item)
+    //     item.productId.toString() === productId.toString()
+    // });
 
-    if (productIndex > -1) {
-        req.session.cart[productIndex].quantity += 1;
-    } else {
-        req.session.cart.push({ productId: productId, quantity: 1 });
-    }
-
-    res.redirect('/cart');
+    // if (productIndex > -1) {
+    //     req.session.cart[productIndex].quantity += 1;
+    // } else {
+    //     req.session.cart.push({ productId: productId, quantity: 1 });
+    // }
+    console.log(req.session.cart)
+res.sendStatus(200)
+   // res.render('cart', {cart: req.session.cart, req: req});
 });
 
-// View cart
-server.get('/cart', async (req, res) => {
-    const cart = req.session.cart || [];
-    const productIds = cart.map(item => item.productId);
 
-    const products = await Product.find({ '_id': { $in: productIds } });
 
-    const cartWithDetails = products.map(product => {
-        const productInCart = cart.find(item => item.productId === product._id.toString());
-        return {
-            ...product._doc,
-            quantity: productInCart.quantity
-        };
-    });
-
-    res.render('cart', { cart: cartWithDetails, req: req });
-});
 // Start the server
 server.listen(5000, ()=>{
     console.log(`Server running on 5000 \nhttp://localhost:5000` );

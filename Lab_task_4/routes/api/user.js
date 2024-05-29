@@ -6,7 +6,7 @@ const User  = require("../../models/User"); // You are importing the Reciever mo
 router.get("/", async function (req, res) {
     // Fetch all user from the database and send them as a response
     let user = await User.find();
-    console.log(user);
+    console.log("user/",user);
     return res.send(user);
 });
 
@@ -30,12 +30,12 @@ router.post("/login", async function (req, res) {
 
 
     const { email, password } = req.body
-    console.log(email)
+    console.log("Email",email)
     try {
         const user= await User.findOne({email:email });
-        console.log(user)
+        console.log("user",user)
          if(!user) return res.redirect("/register")
-       console.log(password, user.password)
+       console.log("password ",password, user.password)
             if((password !== user.password)) return res.redirect("/login")
 
        req.session.user = user;
