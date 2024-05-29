@@ -137,8 +137,6 @@ router.get("/products/:id", async (req, res) => {
 
         console.log(req.session.visitedProducts)
 
-
-
         res.render("products", { products: products, req: req})
     } catch (err) {
         res.status(500).send(err);
