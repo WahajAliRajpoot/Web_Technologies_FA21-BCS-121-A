@@ -121,23 +121,25 @@ res.sendStatus(200)
 });
 router.get("/products/:id", async (req, res) => {
     try {
-        const product = await Product.findById(req.params.id);
-        if (!product) {
+        console.log(req.params.id)
+        const products = await FeaturedProduct.findById(req.params.id);
+        console.log(products)
+        if (!products) {
             return res.status(404).send('Product not found');
         }
 
         if (!req.session.visitedProducts) {
             req.session.visitedProducts = [];
         }
-        if (!req.session.visitedProducts.includes(product._id.toString())) {
-            req.session.visitedProducts.push(product._id.toString());
+        if (!req.session.visitedProducts.includes(products._id.toString())) {
+            req.session.visitedProducts.push(products._id.toString());
         }
 
         console.log(req.session.visitedProducts)
 
 
 
-        res.render("products", { products: product, req: req})
+        res.render("products", { products: products, req: req})
     } catch (err) {
         res.status(500).send(err);
     }
@@ -148,7 +150,7 @@ router.get('/visited-products', async (req, res) => {
         if (!req.session.visitedProducts || req.session.visitedProducts.length === 0) {
             return res.render('visited-product', {  products: [], req: req});
         }
-        const products = await Product.find({ _id: { $in: req.session.visitedProducts } });
+        const products = await FeaturedProduct.find({ _id: { $in: req.session.visitedProducts } });
 
 
         res.render('visited-product', {  products: products, req: req });
